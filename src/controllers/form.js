@@ -53,30 +53,53 @@ const eventList = (req, res) => {
       let maxId = result[0][0].id;
       console.log(maxId);
   
-
-
-   db.sequelize.query(
-      `INSERT INTO  event_list (id, event_name, venue, from, to, time, other_info) VALUES 
-      ("${maxId}", "${eventName}","${venue}","${from}",
+    db.sequelize.query(
+      `INSERT INTO event_list (event_name, venue, 
+      date_from, date_to, time, other_info
+ ) VALUES 
+      ( "${eventName}","${venue}","${from}",
        "${to}","${time}","${otherInfo}")`)
       .then((results) => {
         res.json({
           status: "success",
-          result: maxId
+          msg : "Event created successfully"
+          // result: maxId,
+          // results
         });
       })
       .catch((err) => {
         console.log(err);
         res.status(500).json({ status: "failed", err });
-      })
+      })  
 
     })
 };
+
+
+const fetchEventList = (req, res) => {
+   // const { id } = req.params;
+  db.sequelize
+    .query(`SELECT * from event_list`)
+    .then((results) => {
+      res.json({
+        status: "success",
+        result: results[0],
+      });
+
+      // console.log(results[0]);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ status: "failed", err });
+    });
+};
+
 
 export {
 
 fetchPayment,
 fetchUserById,   
-eventList
+eventList,
+fetchEventList
 
 } 
