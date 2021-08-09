@@ -99,6 +99,25 @@ const fetchEventList = (req, res) => {
 };
 
 
+const fetchEventPictures = (req, res) => {
+   const { id } = req.params;
+  db.sequelize
+    .query(`SELECT * from event_pictures where event_name = "${id}"`)
+    .then((results) => {
+      res.json({
+        status: "success",
+        result: results[0],
+      });
+
+      // console.log(results[0]);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ status: "failed", err });
+    });
+};
+
+
 const fileUploader =  (req, res) => {
   console.log(req.body)
   console.log(req.files)
@@ -140,6 +159,7 @@ fetchPayment,
 fetchUserById,   
 eventList,
 fetchEventList,
-fileUploader
+fileUploader,
+fetchEventPictures
 
 } 
