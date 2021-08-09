@@ -1,4 +1,6 @@
 import db from "../models";
+const fs = require('fs');
+const cloudinary = require('../config/cloudinary')
 
 
 const fetchPayment = (req, res) => {
@@ -44,7 +46,9 @@ const eventList = (req, res) => {
     to,
     time,
     otherInfo,
+    imageUrl
   } = req.body
+  console.log(req.body)
 
 
   db.sequelize
@@ -55,10 +59,10 @@ const eventList = (req, res) => {
   
     db.sequelize.query(
       `INSERT INTO event_list (event_name, venue, 
-      date_from, date_to, time, other_info
+      date_from, date_to, time, other_info, event_picture
  ) VALUES 
       ( "${eventName}","${venue}","${from}",
-       "${to}","${time}","${otherInfo}")`)
+       "${to}","${time}","${otherInfo}", "${imageUrl}")`)
       .then((results) => {
         res.json({
           status: "success",
@@ -95,11 +99,47 @@ const fetchEventList = (req, res) => {
 };
 
 
+const fileUploader =  (req, res) => {
+  console.log(req.body)
+  console.log(req.files)
+  const files = req.files
+  const {user, event_name} = req.body
+  console.log(JSON.stringify(req.files))
+ files.forEach((item) => {
+  // db.sequelize
+  //   .query(`SELECT  max(id) + 1 as id from event_pictures `)
+  //   .then((result) => {
+  //     let maxId = result[0][0].id;
+  //     console.log(maxId);
+ 
+
+    db.sequelize.query(
+      `INSERT INTO event_pictures ( imageUrl, user, event_name
+      
+ ) VALUES 
+      ( "${item.path}", "${user}", "${event_name}")`)
+     .catch((err) => {
+        console.log(err);
+        res.status(500).json({ status: "failed", err });
+      }) 
+    })
+
+
+        res.json({
+          status: "success",
+          msg : "Event Pictures Posted successfully"
+          // result: maxId, 
+          // results
+        });
+      
+}
+
 export {
 
 fetchPayment,
 fetchUserById,   
 eventList,
-fetchEventList
+fetchEventList,
+fileUploader
 
 } 
