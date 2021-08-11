@@ -150,6 +150,7 @@ const fileUploader =  (req, res) => {
           msg : "Event Pictures Posted successfully"
           // result: maxId, 
           // results
+          // Hello
         });
       
 }
