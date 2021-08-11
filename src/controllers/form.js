@@ -46,7 +46,8 @@ const eventList = (req, res) => {
     to,
     time,
     otherInfo,
-    imageUrl
+    imageUrl,
+    theme
   } = req.body
   console.log(req.body)
 
@@ -59,10 +60,10 @@ const eventList = (req, res) => {
   
     db.sequelize.query(
       `INSERT INTO event_list (event_name, venue, 
-      date_from, date_to, time, other_info, event_picture
+      date_from, date_to, time, other_info, event_picture, theme
  ) VALUES 
       ( "${eventName}","${venue}","${from}",
-       "${to}","${time}","${otherInfo}", "${imageUrl}")`)
+       "${to}","${time}","${otherInfo}", "${imageUrl}", "${theme}")`)
       .then((results) => {
         res.json({
           status: "success",
@@ -153,6 +154,10 @@ const fileUploader =  (req, res) => {
       
 }
 
+
+
+
+
 export {
 
 fetchPayment,
@@ -160,6 +165,7 @@ fetchUserById,
 eventList,
 fetchEventList,
 fileUploader,
-fetchEventPictures
+fetchEventPictures,
+
 
 } 
