@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf build && mkdir build",
     "dev": "nodemon --exec babel-node src/index.js",
-    "build-server": "babel -d ./build ./src -s",
+    "build-server": "babel -d ./build ./src --copy-files",
     "build": "npm run clean && npm run build-server",
     "start": "node ./build/index.js",
     "debug": "node --debug ./build/index.js"
