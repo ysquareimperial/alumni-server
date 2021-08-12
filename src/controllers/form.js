@@ -155,6 +155,17 @@ const fileUploader =  (req, res) => {
       
 }
 
+const uploadChildrenImages =  (req, res) => {
+  console.log(req.body)
+  console.log(req.files)
+  const files = req.files
+  const {user, event_name} = req.body
+  console.log(JSON.stringify(req.files))
+
+  
+      
+}
+
 
 
 
@@ -167,6 +178,6 @@ eventList,
 fetchEventList,
 fileUploader,
 fetchEventPictures,
-
+uploadChildrenImages
 
 } 
