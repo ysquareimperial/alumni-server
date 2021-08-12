@@ -24,12 +24,14 @@ const SignUp = (req, res) => {
                                 let newPass = hash;
 
                                 db.sequelize.query(
-                                    `INSERT INTO signup (id, email, password, firstName, lastName, phone, imageUrl
+                                    `INSERT INTO signup (id, email, password, 
+                                    firstName, lastName, phone, imageUrl
               ) VALUES 
-              ("${maxId}", "${email}","${password}","${firstName}","${lastName}","${phone}","${imageUrl}"
+              ("${maxId}", "${email}","${password}","${firstName}","${lastName}",
+              "${phone}","${imageUrl}"
                )`)
                                     .then((results) => {
-                                        db.sequelize.query(`SELECT * from signup where email="${email}"`)
+                                        db.sequelize.query(`SELECT * from signup where phone ="${phone}"`)
                                             .then(result => {
                                                 //   res.json({
                                                 //   status: "success",
@@ -39,7 +41,7 @@ const SignUp = (req, res) => {
                                                 console.log(user)
 
                                                 let payload = {
-                                                    email: user.email,
+                                                    phone: user.phone,
                                                 }
                                                 jwt.sign(payload, "secret", {
                                                     expiresIn: "1d"
