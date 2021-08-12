@@ -14,10 +14,10 @@
     },
   
     "production": {
-      "username": "pscprim1_customer",
-      "password": "Sax!frag3456",
-      "database": "pscprim1_customer",
-      "host": "pscprime.com",
+      "username": "be7fb4a3949e63",
+      "password": "9f4c0114",
+      "database": "heroku_7307f3b1474bb87",
+      "host": "us-cdbr-east-04.cleardb.com",
       "dialect": "mysql"
     }
   }
