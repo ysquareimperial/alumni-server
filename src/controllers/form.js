@@ -156,16 +156,61 @@ const fileUploader =  (req, res) => {
 }
 
 const uploadChildrenImages =  (req, res) => {
-  console.log(req.body)
-  console.log(req.files)
-  const files = req.files
+   // console.log(req.body)
+  // const childName = req.body.childName
+  // console.log(childName)
+  // const files = req.body.files
+  // console.log(files)
   const {user, event_name} = req.body
   console.log(JSON.stringify(req.files))
 
-  
+ // files.forEach((item, index) => {
+ //  db.sequelize.query(
+ //      `INSERT INTO children_details ( child_image, name_of_child
       
-}
+ // ) VALUES 
+ //      ( "${item}", "${childName[index]}")`)
+ //     .catch((err) => {
+ //        console.log(err);
+ //        res.status(500).json({ status: "failed", err });
+ //      }) 
+ //    })
 
+ 
+}
+      
+
+const updateUserProfile = (req, res) => {
+  console.log(req.body)
+  console.log(req.file)
+  const {
+    id,
+firstName,
+lastName,
+phone,
+email,
+password,
+address
+  } = req.body;
+
+  db.sequelize
+    .query(
+      `UPDATE signup SET firstName = "${firstName}", address = "${address}",
+      lastName ="${lastName}", phone = "${phone}", imageUrl = "${req.file.path}", 
+      email = "${email}"
+       WHERE id = "${id}"`
+    )
+    .then((results) => {
+      res.json({
+        status: "success",
+        result: results[0],
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ status: "failed", err });
+    });
+};
 
 
 
@@ -178,6 +223,7 @@ eventList,
 fetchEventList,
 fileUploader,
 fetchEventPictures,
-uploadChildrenImages
+uploadChildrenImages,
+updateUserProfile
 
 } 

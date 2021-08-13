@@ -7,7 +7,8 @@ import {
    fetchEventList,
    fileUploader,
    uploadChildrenImages,
-   fetchEventPictures
+   fetchEventPictures,
+   updateUserProfile
    // uploadMulterImage
 
  } 
@@ -23,6 +24,7 @@ module.exports = (app) => {
    app.get('/fetch_user_id/:id', fetchUserById)
    app.post('/post_images', upload.array('files'), fileUploader)
    app.post('/post_children_images', upload.array('files'), uploadChildrenImages)
+   app.post('/update_user_profile', upload.single('file'), updateUserProfile)   
    
   
 };
