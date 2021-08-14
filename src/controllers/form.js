@@ -192,7 +192,25 @@ email,
 password,
 address
   } = req.body;
-
+if(req.file === undefined){
+ db.sequelize
+    .query(
+      `UPDATE signup SET firstName = "${firstName}", address = "${address}",
+      lastName ="${lastName}", phone = "${phone}",  email = "${email}"
+       WHERE id = "${id}"`
+    )
+    .then((results) => {
+      res.json({
+        status: "success",
+        result: results[0],
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ status: "failed", err });
+    });
+}
+else{
   db.sequelize
     .query(
       `UPDATE signup SET firstName = "${firstName}", address = "${address}",
@@ -210,6 +228,7 @@ address
       console.log(err);
       res.status(500).json({ status: "failed", err });
     });
+}
 };
 
 
