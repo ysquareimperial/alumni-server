@@ -4,8 +4,9 @@ import db from "../models";
 
 
 const fetchGroupById = (req, res) => {
+  const {user_id} = req.params
   db.sequelize
-    .query(`SELECT * from groups`)
+    .query(`SELECT * from group_members where member_id = "${user_id}"`)
     .then((results) => {
       res.json({
         status: "success",
@@ -22,14 +23,22 @@ const fetchGroupById = (req, res) => {
 
 
 const fetchGroupByIdP = (req, res) => {
-  const {id} = req.params
+  const {user_id, group_id} = req.params
   db.sequelize
-    .query(`SELECT * from group_members where member_id = "${id}"`)
+    .query(`SELECT * from group_members where member_id = "${user_id}" 
+      and group_id = ${group_id}`)
     .then((results) => {
-      res.json({
-        status: "success",
+      if (results[0].length) {
+                        res.json({
+        success: true,
         result: results[0],
-      });
+      })
+                    } else {
+      res.json({
+        success: false,
+        result: results[0],
+      })
+    }
 
       // console.log(results[0]);
     })
@@ -44,7 +53,14 @@ const acceptInvitation = (req, res) => {
   const {user,
     group_name,
     id} = req.body
-  db.sequelize
+db.sequelize.query(`SELECT * from group_members where member_id = "${user}"`)
+.then((result) => {
+  if (result[0].length) {
+                        console.log('already in group')
+                        return res.status(400).json({ success: false, 
+                          msg: 'already in group' })
+                    } else {
+                      db.sequelize
     .query(`INSERT INTO group_members (group_id, member_id, group_name
 ) VALUES ("${id}", "${user}", "${group_name}")`)
     .then((results) => {
@@ -59,6 +75,11 @@ const acceptInvitation = (req, res) => {
       console.log(err);
       res.status(500).json({ status: "failed", err });
     });
+                    }
+}).catch((err) => {
+  console.log(err)
+})
+  
 }
 export {
 fetchGroupById,
