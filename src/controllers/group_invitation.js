@@ -8,8 +8,8 @@ console.log(req.body)
 const {emailAddress, groupLink } = req.body
 	transport
       .sendMail({
-        from : '"PharmPay" <pharmpay-support@brainstorm.ng>',
-        // from: '"AlbumSupport" <album-support@brainstorm.ng>',
+        // from : '"PharmPay" <pharmpay-support@brainstorm.ng>',
+        from: '"AlbumSupport" <album-support@brainstorm.ng>',
         to: emailAddress,
         subject: `[AlbumSupport] Group Invitation`,
         html: adminInvite(groupLink),
