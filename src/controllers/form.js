@@ -82,9 +82,9 @@ const eventList = (req, res) => {
 
 
 const fetchEventList = (req, res) => {
-   // const { id } = req.params;
+    const { id } = req.params;
   db.sequelize
-    .query(`SELECT * from event_list`)
+    .query(`SELECT * from event_list where group_id = ${id}`)
     .then((results) => {
       res.json({
         status: "success",

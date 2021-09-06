@@ -37,6 +37,8 @@ app.get('/', (req, res) => res.send('Hello my World'));
 require('./routes/user.js')(app);
 require("./routes/authentication.js")(app);
 require("./routes/form.js")(app);
+require("./routes/groups.js")(app);
+require("./routes/group_invitation.js")(app);
 
 //create a server
 var server = app.listen(port, function() {
