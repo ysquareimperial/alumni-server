@@ -52,7 +52,7 @@ const acceptInvitation = (req, res) => {
   console.log(req.body) 
   const {user,
     group_name,
-    id} = req.body
+    group_id} = req.body
 db.sequelize.query(`SELECT * from group_members where member_id = "${user}"`)
 .then((result) => {
   if (result[0].length) {
@@ -62,10 +62,10 @@ db.sequelize.query(`SELECT * from group_members where member_id = "${user}"`)
                     } else {
                       db.sequelize
     .query(`INSERT INTO group_members (group_id, member_id, group_name
-) VALUES ("${id}", "${user}", "${group_name}")`)
+) VALUES ("${group_id}", "${user}", "${group_name}")`)
     .then((results) => {
       res.json({
-        status: "success",
+        success : true,
         result: results[0],
       });
 
@@ -81,8 +81,48 @@ db.sequelize.query(`SELECT * from group_members where member_id = "${user}"`)
 })
   
 }
+
+const CreateGroup = (req, res) => {
+  const {user_id,
+group_name, group_description} = req.body
+   console.log(req.file)
+db.sequelize
+    .query(`SELECT  max(id) + 1 as id from groups `)
+    .then((result) => {
+      let maxId = result[0][0].id;
+      console.log(maxId);
+
+  db.sequelize.query(`INSERT INTO groups  (id, group_name, created_by, group_logo) values
+    ("${maxId}", "${group_name}", "${user_id}", "${req.file.path}")
+    `)
+  .then((res) => {
+    db.sequelize.query(`INSERT  INTO group_members (group_id, 
+      member_id, 
+      group_name, group_logo) VALUES ("${maxId}", "${user_id}", 
+      "${group_name}", "${req.file.path}")`)
+    .then((result) => {
+      res.json({
+        status : 200,
+        msg : "group successfully created..."
+      })
+      // console.log(result)
+    })
+    .catch((err) => {
+      console.log(err)
+      res.json({
+        status : 500,
+        // msg : "group successfully created..."
+      })
+    })
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+})
+}
 export {
 fetchGroupById,
 fetchGroupByIdP,
-acceptInvitation
+acceptInvitation,
+CreateGroup
 }

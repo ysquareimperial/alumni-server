@@ -47,7 +47,9 @@ const eventList = (req, res) => {
     time,
     otherInfo,
     imageUrl,
-    theme
+    theme,
+    group_id,
+    group_name
   } = req.body
   console.log(req.body)
 
@@ -60,10 +62,10 @@ const eventList = (req, res) => {
   
     db.sequelize.query(
       `INSERT INTO event_list (event_name, venue, 
-      date_from, date_to, time, other_info, event_picture, theme
+      date_from, date_to, time, other_info, event_picture, theme, group_id, group_name
  ) VALUES 
       ( "${eventName}","${venue}","${from}",
-       "${to}","${time}","${otherInfo}", "${imageUrl}", "${theme}")`)
+       "${to}","${time}","${otherInfo}", "${imageUrl}", "${theme}", "${group_id}", "${group_name}")`)
       .then((results) => {
         res.json({
           status: "success",
@@ -99,6 +101,25 @@ const fetchEventList = (req, res) => {
     });
 };
 
+const fetchGroupListById = (req, res) => {
+    const { id } = req.params;
+  db.sequelize
+    .query(`SELECT * from group_members where member_id = "${id}"`)
+    .then((results) => {
+      res.json({
+        status: "success",
+        result: results[0],
+      });
+
+      // console.log(results[0]);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ status: "failed", err });
+    });
+};
+
+
 
 const fetchEventPictures = (req, res) => {
    const { id } = req.params;
@@ -123,7 +144,7 @@ const fileUploader =  (req, res) => {
   console.log(req.body)
   console.log(req.files)
   const files = req.files
-  const {user, event_name} = req.body
+  const {user, event_name, group_id} = req.body
   console.log(JSON.stringify(req.files))
  files.forEach((item) => {
   // db.sequelize
@@ -134,10 +155,10 @@ const fileUploader =  (req, res) => {
  
 
     db.sequelize.query(
-      `INSERT INTO event_pictures ( imageUrl, user, event_name
+      `INSERT INTO event_pictures ( imageUrl, user, event_name, group_id
       
  ) VALUES 
-      ( "${item.path}", "${user}", "${event_name}")`)
+      ( "${item.path}", "${user}", "${event_name}", "${group_id}")`)
      .catch((err) => {
         console.log(err);
         res.status(500).json({ status: "failed", err });
@@ -243,6 +264,7 @@ fetchEventList,
 fileUploader,
 fetchEventPictures,
 uploadChildrenImages,
-updateUserProfile
+updateUserProfile,
+fetchGroupListById
 
 } 
