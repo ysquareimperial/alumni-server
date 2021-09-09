@@ -29,7 +29,7 @@ const fetchGroupByIdP = (req, res) => {
       and group_id = ${group_id}`)
     .then((results) => {
       if (results[0].length) {
-                        res.json({
+                   res.json({
         success: true,
         result: results[0],
       })
@@ -95,12 +95,12 @@ db.sequelize
   db.sequelize.query(`INSERT INTO groups  (id, group_name, created_by, group_logo) values
     ("${maxId}", "${group_name}", "${user_id}", "${req.file.path}")
     `)
-  .then((res) => {
+  .then((result1) => {
     db.sequelize.query(`INSERT  INTO group_members (group_id, 
       member_id, 
       group_name, group_logo) VALUES ("${maxId}", "${user_id}", 
       "${group_name}", "${req.file.path}")`)
-    .then((result) => {
+    .then((result2) => {
       res.json({
         status : 200,
         msg : "group successfully created..."
